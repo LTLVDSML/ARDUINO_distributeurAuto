@@ -5,11 +5,11 @@
 #define in3 10
 #define in4 11
 
-int intervalle = 2; //ms
-int compteur; // compte le temps entre chaque actionnement
-int delai= 10; //intervalle entre 2 actionnement
-int compteurAction; // compte le temps durant l'action de rotation
-int tempsRotation = 3000; // temps de rotation lors de l'activation
+int intervalle = 2;             //ms 
+int compteur;                   // compte le temps entre chaque actionnement
+int delai = 10;                 //intervalle entre 2 actionnements
+int compteurAction;             // compte le temps durant l'action de rotation
+int tempsRotation = 1000;       // temps de rotation lors de l'activation
 
 void setup() {
   // put your setup code here, to run once:
@@ -36,7 +36,27 @@ void loop() {
 
   if(compteur == delai)
   {
-  while(compteurAction < tempsRotation)
+    
+  rotationNegative(intervalle, tempsRotation, compteurAction);
+  
+  compteur = 0;
+  compteurAction = 0;
+
+  delay(1000);
+
+  rotationPositive(intervalle, tempsRotation, compteurAction);
+
+  compteur = 0;
+  compteurAction = 0;
+  }
+}
+
+
+// FUNCTIONS /////////////////////////////////////////////////////////
+
+void rotationNegative(int intervalle, int tempsRotation, int compteurAction){
+
+while(compteurAction < tempsRotation)
   {
   digitalWrite(in1,HIGH);
   digitalWrite(in2,LOW);
@@ -68,8 +88,44 @@ void loop() {
 
   compteurAction++;
   Serial.print(compteurAction);
-  }
-  compteur = 0;
-  compteurAction = 0;
-  }
+}
+}
+
+//////////////////////////////////////////////////
+
+void rotationPositive(int intervalle, int tempsRotation, int compteurAction){
+
+while(compteurAction < tempsRotation)
+  {
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,HIGH);
+  digitalWrite(in4,HIGH);
+
+  delay(intervalle);
+
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,HIGH);
+  digitalWrite(in3,HIGH);
+  digitalWrite(in4,LOW);
+
+  delay(intervalle);
+
+  digitalWrite(in1,HIGH);
+  digitalWrite(in2,HIGH);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,LOW);
+
+  delay(intervalle);
+
+  digitalWrite(in1,HIGH);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,HIGH);
+
+  delay(intervalle);
+
+  compteurAction++;
+  Serial.print(compteurAction);
+}
 }
