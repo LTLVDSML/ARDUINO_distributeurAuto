@@ -1,15 +1,18 @@
 //projet distributeur bouffe
 
-#define in1 8
-#define in2 9
-#define in3 10
-#define in4 11
+#define in1          8
+#define in2          9
+#define in3          10
+#define in4          11
+#define inputLumiere A0
 
-int intervalle = 2;             //ms 
-int compteur;                   // compte le temps entre chaque actionnement
-int delai = 10;                 //intervalle entre 2 actionnements
+int intervalle      = 2;        // ms 
+int delai           = 10;       // intervalle entre 2 actionnements
 int compteurAction;             // compte le temps durant l'action de rotation
-int tempsRotation = 1000;       // temps de rotation lors de l'activation
+int tempsRotation   = 1000;     // temps de rotation lors de l'activation
+int seuilHaut       = 1000;     // seuil de detection de la lumiere
+int seuilBas        = 400;      // seuil de detection de l obscurite   
+
 
 void setup() {
   // put your setup code here, to run once:
@@ -30,25 +33,20 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
-  compteur++;
-  delay(1000);
-  Serial.print(compteur);
+  delay(60000);
 
-  if(compteur == delai)
+  int lumiere = analogRead(inputLumiere);
+
+  if(lumiere > seuilHaut)
   {
-    
-  rotationNegative(intervalle, tempsRotation, compteurAction);
-  
-  compteur = 0;
-  compteurAction = 0;
-
-  delay(1000);
-
-  rotationPositive(intervalle, tempsRotation, compteurAction);
-
-  compteur = 0;
-  compteurAction = 0;
+   rotationNegative(intervalle, tempsRotation, compteurAction);
   }
+
+  if(lumiere < seuilBas)
+  {
+   rotationPositive(intervalle, tempsRotation, compteurAction);
+  }
+
 }
 
 
